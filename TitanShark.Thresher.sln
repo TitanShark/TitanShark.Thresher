@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30621.155
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TitanShark.Thresher.Core", "TitanShark.Thresher.Core\TitanShark.Thresher.Core.csproj", "{2FEFAF58-7123-4A20-A810-FEAFB553B934}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TitanShark.Thresher.Core.Tests", "TitanShark.Thresher.Core.Tests\TitanShark.Thresher.Core.Tests.csproj", "{76DA48A0-08D2-4290-97C8-5A3CBF12D0A3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2FEFAF58-7123-4A20-A810-FEAFB553B934}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2FEFAF58-7123-4A20-A810-FEAFB553B934}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2FEFAF58-7123-4A20-A810-FEAFB553B934}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2FEFAF58-7123-4A20-A810-FEAFB553B934}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76DA48A0-08D2-4290-97C8-5A3CBF12D0A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76DA48A0-08D2-4290-97C8-5A3CBF12D0A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76DA48A0-08D2-4290-97C8-5A3CBF12D0A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76DA48A0-08D2-4290-97C8-5A3CBF12D0A3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9F2CDECA-8134-4EAC-A42D-E5AC18FE4CA9}
+	EndGlobalSection
+EndGlobal
