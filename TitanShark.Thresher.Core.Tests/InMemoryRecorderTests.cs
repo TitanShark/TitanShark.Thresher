@@ -22,7 +22,7 @@ namespace TitanShark.Thresher.Core.Tests
             // prepares
             var persistence = new InMemoryRecordsPersistence();
             var recorder = new Recorder(persistence);
-            var handler = new SerialInterceptionHttpClientHandler(recorder);
+            var handler = new SerialInterceptionHttpClientHandler(interceptors: recorder);
             var sut = new HttpClient(handler);
 
             // acts
@@ -48,7 +48,7 @@ namespace TitanShark.Thresher.Core.Tests
             // prepares
             var persistence = new InMemoryRecordsPersistence();
             var recorder = new Recorder(persistence);
-            var handler = new SerialInterceptionHttpClientHandler(recorder);
+            var handler = new SerialInterceptionHttpClientHandler(interceptors: recorder);
             var sut = new HttpClient(handler);
 
             const int numberOfCalls = 100;

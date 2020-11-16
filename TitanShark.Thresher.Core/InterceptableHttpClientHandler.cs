@@ -10,10 +10,14 @@ namespace TitanShark.Thresher.Core
     {
         internal IList<IInterceptor> Interceptors { get; } = new List<IInterceptor>();
 
+        internal Transmitter Transmitter { get; }
+        
         public bool HasAnyInterceptor => Interceptors != null && Interceptors.Count > 0;
 
-        protected InterceptableHttpClientHandler(params IInterceptor[] interceptors)
+        protected InterceptableHttpClientHandler(Transmitter transmitter = null, params IInterceptor[] interceptors)
         {
+            Transmitter = transmitter ?? CreateDefaultTransmitter();
+
             if (interceptors != null && interceptors.Length > 0)
             {
                 foreach(var interceptor in interceptors) 
@@ -45,9 +49,24 @@ namespace TitanShark.Thresher.Core
             }
         }
 
+        protected virtual Transmitter CreateDefaultTransmitter()
+        {
+            return new Transmitter
+            (
+                (callId, request, cancellationToken) => base.SendAsync(request, cancellationToken)
+            );
+        }
+
         protected virtual Task<HttpResponseMessage> OnSending(CallId callId, HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            return base.SendAsync(request, cancellationToken);
+            var sendFunction = Transmitter?.SendFunction;
+
+            if (sendFunction != null)
+            {
+                return sendFunction(callId, request, cancellationToken);
+            }
+
+            return Task.FromResult(default(HttpResponseMessage));
         }
 
         protected abstract Task OnPreparing(CallId callId, HttpRequestMessage request, CancellationToken cancellationToken);

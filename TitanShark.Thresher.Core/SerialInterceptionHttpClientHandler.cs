@@ -8,7 +8,7 @@ namespace TitanShark.Thresher.Core
 {
     public class SerialInterceptionHttpClientHandler : InterceptableHttpClientHandler
     {
-        public SerialInterceptionHttpClientHandler(params IInterceptor[] interceptors) : base(interceptors)
+        public SerialInterceptionHttpClientHandler(Transmitter transmitter = null, params IInterceptor[] interceptors) : base(transmitter, interceptors)
         {
         }
 
