@@ -8,6 +8,8 @@ namespace TitanShark.Thresher.Core
 {
     public class Recorder : IInterceptor
     {
+        public WeakReference<HttpContentReader> ContentReader { get; set; }
+
         public bool IsEnabled { get; set; } = true;
 
         public IRecordsPersistence[] Persistences { get; }
@@ -27,7 +29,7 @@ namespace TitanShark.Thresher.Core
             var record = new Record
             {
                 CallId = callId,
-                Request = await request.ToRecordable()
+                Request = await request.ToRecordable(callId, GetContentReader())
             };
 
             await SaveToPersistences(record, cancellationToken);
@@ -43,8 +45,8 @@ namespace TitanShark.Thresher.Core
             var record = new Record
             {
                 CallId = callId,
-                Request = await request.ToRecordable(),
-                Response = await response.ToRecordable()
+                Request = await request.ToRecordable(callId, GetContentReader()),
+                Response = await response.ToRecordable(callId, GetContentReader())
             };
 
             await SaveToPersistences(record, cancellationToken);
@@ -60,7 +62,7 @@ namespace TitanShark.Thresher.Core
             var record = new Record
             {
                 CallId = callId,
-                Request = await request.ToRecordable(),
+                Request = await request.ToRecordable(callId, GetContentReader()),
                 Error = exception
             };
 
@@ -71,6 +73,12 @@ namespace TitanShark.Thresher.Core
         {
             var tasks = Persistences.Select(persistence => persistence.Save(record, cancellationToken));
             await Task.WhenAll(tasks);
+        }
+
+        private HttpContentReader GetContentReader()
+        {
+            ContentReader.TryGetTarget(out HttpContentReader target);
+            return target;
         }
     }
 }

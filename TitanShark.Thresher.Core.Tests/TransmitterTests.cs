@@ -32,7 +32,7 @@ namespace TitanShark.Thresher.Core.Tests
                         });
                     }
                 );
-            var handler = new SerialInterceptionHttpClientHandler(transmitter: transmitter);
+            var handler = new InterceptableHttpClientHandler(transmitter: transmitter);
             var sut = new HttpClient(handler);
 
             // acts

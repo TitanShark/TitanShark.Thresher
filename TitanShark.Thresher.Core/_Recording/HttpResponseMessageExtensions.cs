@@ -1,12 +1,11 @@
-﻿using System.IO;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace TitanShark.Thresher.Core
 {
     public static class HttpResponseMessageExtensions
     {
-        public static async Task<RecordableResponse> ToRecordable(this HttpResponseMessage response)
+        public static async Task<RecordableResponse> ToRecordable(this HttpResponseMessage response, CallId callId, HttpContentReader reader)
         {
             var recordable = new RecordableResponse
             {
@@ -18,19 +17,8 @@ namespace TitanShark.Thresher.Core
                 Version = response.Version
             };
 
-            if (response.Content != null)
-            {
-                // serializes the HTTP content to a memory buffer
-                await response.Content.LoadIntoBufferAsync().ConfigureAwait(false);
-
-                using (var stream = new MemoryStream())
-                {
-                    await response.Content.CopyToAsync(stream).ConfigureAwait(false);
-                    stream.Position = 0;
-
-                    recordable.Content = stream.ToArray();
-                }
-            }
+            var content = response.Content;
+            recordable.Content = await reader.ReadDirectly(callId, content);
 
             return recordable;
         }
