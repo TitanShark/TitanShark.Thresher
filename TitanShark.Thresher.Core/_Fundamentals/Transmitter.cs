@@ -11,12 +11,7 @@ namespace TitanShark.Thresher.Core
 
         public Transmitter(Func<CallId, HttpRequestMessage, CancellationToken, Task<HttpResponseMessage>> sendFunction)
         {
-            if (sendFunction == null)
-            {
-                throw new ArgumentNullException(nameof(sendFunction));
-            }
-
-            SendFunction = sendFunction;
+            SendFunction = sendFunction ?? throw new ArgumentNullException(nameof(sendFunction));
         }
     }
 }

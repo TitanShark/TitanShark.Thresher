@@ -11,7 +11,12 @@ namespace TitanShark.Thresher.Core
             {
                 Headers = request.Headers,
                 Method = request.Method,
+#if NET5_0
+                Options = request.Options,
+                VersionPolicy = request.VersionPolicy,
+#else
                 Properties = request.Properties,
+#endif
                 RequestUri = request.RequestUri,
                 Version = request.Version
             };

@@ -12,9 +12,15 @@ namespace TitanShark.Thresher.Core
         public HttpRequestHeaders Headers { get; set; }
         
         public HttpMethod Method { get; set; }
-        
-        public IDictionary<string, object> Properties { get; set;  }
-        
+
+#if NET5_0
+        public HttpRequestOptions Options { get; set;  }
+
+        public HttpVersionPolicy VersionPolicy { get; set; }
+#else
+        public IDictionary<string, object> Properties { get; set; }
+#endif
+
         public Uri RequestUri { get; set; }
         
         public Version Version { get; set; }

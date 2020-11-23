@@ -20,5 +20,9 @@ namespace TitanShark.Thresher.Core
         public HttpStatusCode StatusCode { get; set; }
         
         public Version Version { get; set; }
+
+#if NET5_0
+        public HttpHeaders TrailingHeaders { get; set; }
+#endif
     }
 }

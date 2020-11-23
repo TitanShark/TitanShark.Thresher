@@ -47,13 +47,13 @@ namespace TitanShark.Thresher.Core.Tests
         [Fact]
         public Task Multiple_Interceptors_Sequential_Runner_DefaultJsonRecordSerializer()
         {
-            return RunMultipleInterceptors(interceptors => new SequentialInterceptorsRunner(interceptors));
+            return RunMultipleInterceptors(interceptors => new SequentialInterceptorsRunner(interceptors), new SystemJsonRecordSerializer());
         }
 
         [Fact]
         public Task Multiple_Interceptors_Parallel_Runner_DefaultJsonRecordSerializer()
         {
-            return RunMultipleInterceptors(interceptors => new ParallelInterceptorsRunner(interceptors));
+            return RunMultipleInterceptors(interceptors => new ParallelInterceptorsRunner(interceptors), new SystemJsonRecordSerializer());
         }
 
         [Fact]
@@ -68,13 +68,13 @@ namespace TitanShark.Thresher.Core.Tests
             return RunMultipleInterceptors(interceptors => new ParallelInterceptorsRunner(interceptors), new NewtonsoftJsonRecordSerializer());
         }
 
-        private async Task RunMultipleInterceptors(Func<IInterceptor[], InterceptorsRunner> runnerCreator, IRecordSerializer<string> serializer = null)
+        private static async Task RunMultipleInterceptors(Func<IInterceptor[], InterceptorsRunner> runnerCreator, IRecordSerializer<string> serializer)
         {
             // prepares
-            var persistenceOne = new InMemoryRecordsPersistence(/*new NewtonsoftJsonRecordSerializer()*/);
+            var persistenceOne = new InMemoryRecordsPersistence(serializer);
             var recorderOne = new Recorder(persistenceOne);
 
-            var persistenceTwo = new InMemoryRecordsPersistence(/*new NewtonsoftJsonRecordSerializer()*/);
+            var persistenceTwo = new InMemoryRecordsPersistence(serializer);
             var recorderTwo = new Recorder(persistenceTwo);
 
             var handler = new InterceptableHttpClientHandler(interceptorsRunner: runnerCreator(new[] { recorderOne, recorderTwo }));

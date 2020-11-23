@@ -14,7 +14,10 @@ namespace TitanShark.Thresher.Core
                 ReasonPhrase = response.ReasonPhrase,
                 RequestMessage = response.RequestMessage,
                 StatusCode = response.StatusCode,
-                Version = response.Version
+                Version = response.Version,
+#if NET5_0
+                TrailingHeaders = response.TrailingHeaders
+#endif
             };
 
             var content = response.Content;
