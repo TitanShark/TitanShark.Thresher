@@ -1,5 +1,6 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace TitanShark.Thresher.Core
 {
@@ -9,7 +10,7 @@ namespace TitanShark.Thresher.Core
         {
             var recordable = new RecordableRequest 
             {
-                Headers = request.Headers,
+                Headers = request.Headers.ToDictionary(header => header.Key, header => header.Value),
                 Method = request.Method,
 #if NET5_0
                 Options = request.Options,
@@ -22,7 +23,10 @@ namespace TitanShark.Thresher.Core
             };
 
             var content = request.Content;
+
+            // content might be null
             recordable.Content = await reader.ReadDirectly(callId, content);
+            recordable.ContentTypeName = content?.GetType()?.AssemblyQualifiedName;
 
             return recordable;
         }

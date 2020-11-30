@@ -1,11 +1,12 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 
 namespace TitanShark.Thresher.Core
 {
     public interface IRecordSerializer<T>
     {
-        Task<T> Serialize(Record record);
+        Task<T> Serialize(Record record, CancellationToken cancellationToken);
 
-        Task<Record> Deserialize(T json);
+        Task<Record> Deserialize(T json, CancellationToken cancellationToken);
     }
 }

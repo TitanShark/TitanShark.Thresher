@@ -6,6 +6,7 @@ using Xunit.Abstractions;
 using System.Linq;
 using System;
 using Newtonsoft.Json;
+using System.Threading;
 
 namespace TitanShark.Thresher.Core.Tests
 {
@@ -99,14 +100,14 @@ namespace TitanShark.Thresher.Core.Tests
 
         private class NewtonsoftJsonRecordSerializer : IRecordSerializer<string>
         {
-            public Task<string> Serialize(Record record)
+            public Task<string> Serialize(Record record, CancellationToken cancellationToken)
             {
                 var json = JsonConvert.SerializeObject(record);
 
                 return Task.FromResult(json);
             }
 
-            public Task<Record> Deserialize(string json)
+            public Task<Record> Deserialize(string json, CancellationToken cancellationToken)
             {
                 var record = JsonConvert.DeserializeObject<Record>(json);
 
