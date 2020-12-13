@@ -16,7 +16,27 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-        name: Check-out Source Code
+        name: Check-out Source
+
+      # See also: https://github.com/actions/virtual-environments/issues/1891
+      - uses: actions/setup-dotnet@v1 
+        name: Setup dotnet
+        with:
+          dotnet-version: 5.x
+
+      - name: Calculate Version
+        shell: bash
+        env:
+          DOTNET_CLI_TELEMETRY_OPTOUT: true
+        run: |
+          # Restores .NET tools
+          dotnet tool restore
+
+          # Installs Minver-CLI
+          dotnet tool install --global minver-cli --version 2.3.1
+
+          # Gets the version number
+          VERSION=$(dotnet minver --auto-increment patch --tag-prefix v --verbosity t) 
 
       # See also: https://github.com/marketplace/actions/publish-nuget
       - uses: rohith/publish-nuget@v2
@@ -24,6 +44,7 @@ jobs:
         with:
           PROJECT_FILE_PATH: TitanShark.Thresher.Core/TitanShark.Thresher.Core.csproj 
           PACKAGE_NAME: TitanShark.Thresher.Core
+          VERSION_STATIC: ${{VERSION}}
           TAG_COMMIT: true
           TAG_FORMAT: v*
           NUGET_SOURCE: https://api.nuget.org
