@@ -52,11 +52,8 @@ jobs:
           dotnet tool install -g minver-cli --version 2.3.1
           version=$(minver --auto-increment patch --tag-prefix v --verbosity t)
           commit=$(git rev-parse HEAD)
-          remote=$(git config --get remote.origin.url)
-          repo=$(basename $remote .git)
           # POST a new ref to repo via Github API
-          curl -s -X POST https://api.github.com/repos/$REPO_OWNER/$repo/git/refs \
-          -H "Authorization: token $GITHUB_TOKEN" \
+          curl -s -X POST $GITHUB_API_URL/repos/$GITHUB_REPOSITORY/git/refs \
           -d @- << EOF
           {
             "ref": "refs/tags/$version",
