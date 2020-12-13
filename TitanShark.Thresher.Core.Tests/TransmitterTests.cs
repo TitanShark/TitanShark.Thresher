@@ -43,6 +43,9 @@ namespace TitanShark.Thresher.Core.Tests
             // asserts
             response.StatusCode.Should().Be(System.Net.HttpStatusCode.Created);
             content.Should().Be(responseContentText);
+
+            // cleans up
+            sut.Dispose();
         }
 
         [Fact]
@@ -77,6 +80,9 @@ namespace TitanShark.Thresher.Core.Tests
 
             incorrectResponse.StatusCode.Should().Be(System.Net.HttpStatusCode.NotFound);
             incorrectContent.Should().Be(Mock.NotFound);
+
+            // cleans up
+            sut.Dispose();
         }
 
         private class Mock
