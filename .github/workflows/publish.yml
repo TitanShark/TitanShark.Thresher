@@ -56,11 +56,11 @@ jobs:
           repo=$(basename $remote .git)
           # POST a new ref to repo via Github API
           curl -s -X POST https://api.github.com/repos/$REPO_OWNER/$repo/git/refs \
-            -H "Authorization: token $GITHUB_TOKEN" \
-            -d @- << EOF
-            {
-              "ref": "refs/tags/$version",
-              "sha": "$commit"
-            }
-            EOF
+          -H "Authorization: token $GITHUB_TOKEN" \
+          -d @- << EOF
+          {
+            "ref": "refs/tags/$version",
+            "sha": "$commit"
+          }
+          EOF
 
