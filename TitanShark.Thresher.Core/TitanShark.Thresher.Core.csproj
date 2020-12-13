@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net462;net5.0</TargetFrameworks>
-    <MinVerMinimumMajorMinor>1.0</MinVerMinimumMajorMinor>
     <MinVerTagPrefix>v</MinVerTagPrefix>
     <Authors>TitanShark GmbH</Authors>
     <PackageProjectUrl>https://github.com/TitanShark/TitanShark.Thresher</PackageProjectUrl>
