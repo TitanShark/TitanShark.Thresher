@@ -10,7 +10,6 @@
     <Copyright>© TitanShark GmbH</Copyright>
     <Description>.Net Library for hooking HttpClient.
 Use cases: mocking for Unit-tests, recording and replaying Request/Response.</Description>
-    <Version>1.0.0</Version>
     <PackageTags>HttpClient, hook, mock, record, replay</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
