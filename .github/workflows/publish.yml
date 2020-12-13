@@ -33,7 +33,7 @@ jobs:
           dotnet tool install -g minver-cli --version 2.3.1
 
           # Gets the version number
-          MINVER_VERSION=$("minver --auto-increment patch --tag-prefix v --verbosity t) 
+          MINVER_VERSION=$(minver --auto-increment patch --tag-prefix v --verbosity t) 
 
       # See also: https://github.com/marketplace/actions/publish-nuget
       - uses: rohith/publish-nuget@v2
