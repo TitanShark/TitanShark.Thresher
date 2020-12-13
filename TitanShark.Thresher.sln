@@ -3,9 +3,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30621.155
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TitanShark.Thresher.Core", "TitanShark.Thresher.Core\TitanShark.Thresher.Core.csproj", "{2FEFAF58-7123-4A20-A810-FEAFB553B934}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TitanShark.Thresher.Core", "TitanShark.Thresher.Core\TitanShark.Thresher.Core.csproj", "{2FEFAF58-7123-4A20-A810-FEAFB553B934}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TitanShark.Thresher.Core.Tests", "TitanShark.Thresher.Core.Tests\TitanShark.Thresher.Core.Tests.csproj", "{76DA48A0-08D2-4290-97C8-5A3CBF12D0A3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TitanShark.Thresher.Core.Tests", "TitanShark.Thresher.Core.Tests\TitanShark.Thresher.Core.Tests.csproj", "{76DA48A0-08D2-4290-97C8-5A3CBF12D0A3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{0BC1F859-1B18-4B1F-B3EE-75C23CDAE8E6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{90162BFF-28A9-4ADA-AFB9-387C798564F2}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\publish.yml = .github\workflows\publish.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,6 +31,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{90162BFF-28A9-4ADA-AFB9-387C798564F2} = {0BC1F859-1B18-4B1F-B3EE-75C23CDAE8E6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9F2CDECA-8134-4EAC-A42D-E5AC18FE4CA9}

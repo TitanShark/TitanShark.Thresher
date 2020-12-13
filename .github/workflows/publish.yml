@@ -1,0 +1,31 @@
+name: Publish to Nuget
+
+on:
+  push:
+    branches:
+      - main
+  
+  # See also: https://github.blog/changelog/2020-07-06-github-actions-manual-triggers-with-workflow_dispatch/
+  workflow_dispatch:
+
+jobs:
+  publish:
+    name: Build, pack and publish to Nuget
+    runs-on: ubuntu-latest
+    
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+        name: Check-out Source Code
+
+      # See also: https://github.com/marketplace/actions/publish-nuget
+      - uses: rohith/publish-nuget@v2
+        name: Build and publish Nuget-Package 'TitanShark.Thresher.Core'
+        with:
+          PROJECT_FILE_PATH: TitanShark.Thresher.Core/TitanShark.Thresher.Core.csproj 
+          PACKAGE_NAME: TitanShark.Thresher.Core
+          TAG_COMMIT: true
+          TAG_FORMAT: v*
+          NUGET_SOURCE: https://api.nuget.org
+          NUGET_KEY: ${{secrets.NUGET_API_KEY}}
+          INCLUDE_SYMBOLS: false
