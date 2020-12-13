@@ -22,30 +22,45 @@ jobs:
 
       # See also: https://github.com/actions/virtual-environments/issues/1891
       - uses: actions/setup-dotnet@v1 
-        name: Setup dotnet
+        name: Setup DotNet CLI 5.0.x
         with:
           dotnet-version: 5.0.x
 
-      - name: Calculate Version
+      - name: Build and Run Tests
         shell: bash
         env:
           DOTNET_CLI_TELEMETRY_OPTOUT: true
         run: |
-          # Installs Minver-CLI
-          dotnet tool install -g minver-cli --version 2.3.1
-
-          # Gets the version number
-          MINVER_VERSION=$(minver --auto-increment patch --tag-prefix v --verbosity t) 
-
-      # See also: https://github.com/marketplace/actions/publish-nuget
-      - uses: rohith/publish-nuget@v2
-        name: Build and publish Nuget-Package 'TitanShark.Thresher.Core'
-        with:
-          PROJECT_FILE_PATH: TitanShark.Thresher.Core/TitanShark.Thresher.Core.csproj 
-          PACKAGE_NAME: TitanShark.Thresher.Core
-          VERSION_STATIC: ${{env.MINVER_VERSION}}
-          TAG_COMMIT: true
-          TAG_FORMAT: v*
-          NUGET_SOURCE: https://api.nuget.org
+          dotnet build --configuration Release
+          dotnet test ./**/bin/**/net*/*Tests.dll
+      
+      - name: Pack and Publish to Nuget
+        shell: bash
+        env:
+          DOTNET_CLI_TELEMETRY_OPTOUT: true
           NUGET_KEY: ${{secrets.NUGET_API_KEY}}
-          INCLUDE_SYMBOLS: false
+        run: |
+          dotnet pack
+          dotnet nuget push ./**/bin/**/*.nupkg --api-key $NUGET_KEY --source https://api.nuget.org/v3/index.json
+
+      # See also: https://itnext.io/creating-a-github-action-to-tag-commits-2722f1560dec
+      - name: Add Git-Tag corresponding Current SEMVER-Version
+        shell: bash
+        env:
+          DOTNET_CLI_TELEMETRY_OPTOUT: true
+        run: |
+          dotnet tool install -g minver-cli --version 2.3.1
+          version=$(minver --auto-increment patch --tag-prefix v --verbosity t)
+          commit=$(git rev-parse HEAD)
+          remote=$(git config --get remote.origin.url)
+          repo=$(basename $remote .git)
+          # POST a new ref to repo via Github API
+          curl -s -X POST https://api.github.com/repos/$REPO_OWNER/$repo/git/refs \
+            -H "Authorization: token $GITHUB_TOKEN" \
+            -d @- << EOF
+            {
+              "ref": "refs/tags/$version",
+              "sha": "$commit"
+            }
+            EOF
+
