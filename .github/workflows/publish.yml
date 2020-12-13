@@ -19,10 +19,10 @@ jobs:
         name: Check-out Source
 
       # See also: https://github.com/actions/virtual-environments/issues/1891
-      - uses: actions/setup-dotnet@v1 
-        name: Setup dotnet
-        with:
-          dotnet-version: 5.x
+      # - uses: actions/setup-dotnet@v1 
+      #  name: Setup dotnet
+      #  with:
+      #    dotnet-version: 5.0.x
 
       - name: Calculate Version
         shell: bash
