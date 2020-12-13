@@ -30,10 +30,10 @@ jobs:
           DOTNET_CLI_TELEMETRY_OPTOUT: true
         run: |
           # Installs Minver-CLI
-          dotnet tool install minver-cli --version 2.3.1
+          dotnet tool install -g minver-cli --version 2.3.1
 
           # Gets the version number
-          MINVER_VERSION=$(dotnet minver --auto-increment patch --tag-prefix v --verbosity t) 
+          MINVER_VERSION=$("$DOTNET_ROOT"/minver.exe --auto-increment patch --tag-prefix v --verbosity t) 
 
       # See also: https://github.com/marketplace/actions/publish-nuget
       - uses: rohith/publish-nuget@v2
