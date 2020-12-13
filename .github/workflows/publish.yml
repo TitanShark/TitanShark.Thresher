@@ -19,10 +19,10 @@ jobs:
         name: Check-out Source
 
       # See also: https://github.com/actions/virtual-environments/issues/1891
-      # - uses: actions/setup-dotnet@v1 
-      #  name: Setup dotnet
-      #  with:
-      #    dotnet-version: 5.0.x
+      - uses: actions/setup-dotnet@v1 
+        name: Setup dotnet
+        with:
+          dotnet-version: 5.0.x
 
       - name: Calculate Version
         shell: bash
@@ -33,7 +33,7 @@ jobs:
           dotnet tool restore
 
           # Installs Minver-CLI
-          dotnet tool install --global minver-cli --version 2.3.1
+          dotnet tool install minver-cli --version 2.3.1
 
           # Gets the version number
           MINVER_VERSION=$(dotnet minver --auto-increment patch --tag-prefix v --verbosity t) 
