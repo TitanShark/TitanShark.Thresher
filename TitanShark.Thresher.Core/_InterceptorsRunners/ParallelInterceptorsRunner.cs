@@ -13,7 +13,7 @@ namespace TitanShark.Thresher.Core
         {
         }
 
-        protected virtual async Task RunInterceptorsInParallel(Func<IInterceptor, CancellationToken, Task> func, CancellationToken cancellationToken)
+        protected virtual async Task RunInterceptorsInParallel(Func<IInterceptor, CancellationToken, Task> func, CancellationToken cancellationToken = default)
         {
             if (!HasAnyInterceptor || func == null)
             {
@@ -27,17 +27,17 @@ namespace TitanShark.Thresher.Core
             await Task.WhenAll(tasks);
         }
 
-        public override async Task OnPreparing(CallId callId, HttpRequestMessage request, CancellationToken cancellationToken)
+        public override async Task OnPreparing(CallId callId, HttpRequestMessage request, CancellationToken cancellationToken = default)
         {
             await RunInterceptorsInParallel(async (interceptor, ct) => await interceptor.OnPreparing(callId, request, ct), cancellationToken);
         }
 
-        public override async Task OnDone(CallId callId, HttpRequestMessage request, HttpResponseMessage response, CancellationToken cancellationToken)
+        public override async Task OnDone(CallId callId, HttpRequestMessage request, HttpResponseMessage response, CancellationToken cancellationToken = default)
         {
             await RunInterceptorsInParallel(async (interceptor, ct) => await interceptor.OnDone(callId, request, response, ct), cancellationToken);
         }
 
-        public override async Task OnError(CallId callId, HttpRequestMessage request, Exception exception, CancellationToken cancellationToken)
+        public override async Task OnError(CallId callId, HttpRequestMessage request, Exception exception, CancellationToken cancellationToken = default)
         {
             await RunInterceptorsInParallel(async (interceptor, ct) => await interceptor.OnError(callId, request, exception, ct), cancellationToken);
         }

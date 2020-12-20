@@ -19,23 +19,13 @@ namespace TitanShark.Thresher.Core
             Persistences = persistences;
         }
 
-        public virtual async Task OnPreparing(CallId callId, HttpRequestMessage request, CancellationToken cancellationToken)
+        public virtual Task OnPreparing(CallId callId, HttpRequestMessage request, CancellationToken cancellationToken = default)
         {
-            if (Persistences == null || Persistences.Length == 0)
-            {
-                return;
-            }
-            
-            var record = new Record
-            {
-                CallId = callId,
-                Request = await request.ToRecordable(callId, GetContentReader())
-            };
-
-            await SaveToPersistences(record, cancellationToken);
+            // does nothing
+            return Task.CompletedTask;
         }
 
-        public virtual async Task OnDone(CallId callId, HttpRequestMessage request, HttpResponseMessage response, CancellationToken cancellationToken)
+        public virtual async Task OnDone(CallId callId, HttpRequestMessage request, HttpResponseMessage response, CancellationToken cancellationToken = default)
         {
             if (Persistences == null || Persistences.Length == 0)
             {
@@ -52,7 +42,7 @@ namespace TitanShark.Thresher.Core
             await SaveToPersistences(record, cancellationToken);
         }
 
-        public virtual async Task OnError(CallId callId, HttpRequestMessage request, Exception exception, CancellationToken cancellationToken)
+        public virtual async Task OnError(CallId callId, HttpRequestMessage request, Exception exception, CancellationToken cancellationToken = default)
         {
             if (Persistences == null || Persistences.Length == 0)
             {
@@ -69,7 +59,7 @@ namespace TitanShark.Thresher.Core
             await SaveToPersistences(record, cancellationToken);
         }
 
-        protected virtual async Task SaveToPersistences(Record record, CancellationToken cancellationToken)
+        protected virtual async Task SaveToPersistences(Record record, CancellationToken cancellationToken = default)
         {
             var tasks = Persistences.Select(persistence => persistence.Save(record, cancellationToken));
             await Task.WhenAll(tasks);

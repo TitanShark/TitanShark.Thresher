@@ -28,11 +28,11 @@ namespace TitanShark.Thresher.Core
             }
         }
 
-        public abstract Task OnPreparing(CallId callId, HttpRequestMessage request, CancellationToken cancellationToken);
+        public abstract Task OnPreparing(CallId callId, HttpRequestMessage request, CancellationToken cancellationToken = default);
 
-        public abstract Task OnDone(CallId callId, HttpRequestMessage request, HttpResponseMessage response, CancellationToken cancellationToken);
+        public abstract Task OnDone(CallId callId, HttpRequestMessage request, HttpResponseMessage response, CancellationToken cancellationToken = default);
 
-        public abstract Task OnError(CallId callId, HttpRequestMessage request, Exception exception, CancellationToken cancellationToken);
+        public abstract Task OnError(CallId callId, HttpRequestMessage request, Exception exception, CancellationToken cancellationToken = default);
 
         public void Dispose()
         {

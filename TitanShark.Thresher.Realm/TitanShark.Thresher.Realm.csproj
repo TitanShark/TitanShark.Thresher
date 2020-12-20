@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;net462;net5.0</TargetFrameworks>
+    <MinVerTagPrefix>v</MinVerTagPrefix>
+    <Authors>TitanShark GmbH</Authors>
+    <PackageProjectUrl>https://github.com/TitanShark/TitanShark.Thresher</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/TitanShark/TitanShark.Thresher</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+    <Copyright>© TitanShark GmbH</Copyright>
+    <Description>
+      .Net Library for hooking HttpClient.
+      Use cases: mocking for Unit-tests, recording and replaying Request/Response.
+    </Description>
+    <PackageTags>HttpClient, hook, mock, record, replay</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MinVer" Version="2.3.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="MongoDB.Bson" Version="2.11.5" />
+    <PackageReference Include="Realm" Version="10.0.0-beta.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TitanShark.Thresher.Core\TitanShark.Thresher.Core.csproj" />
+  </ItemGroup>
+
+</Project>

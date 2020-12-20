@@ -20,6 +20,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".docs", ".docs", "{B7F92137
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TitanShark.Thresher.Realm", "TitanShark.Thresher.Realm\TitanShark.Thresher.Realm.csproj", "{DE004850-4F43-4C29-B448-96B9456AFE25}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TitanShark.Thresher.Realm.Tests", "TitanShark.Thresher.Realm.Tests\TitanShark.Thresher.Realm.Tests.csproj", "{31599D38-C943-4A76-BD49-3BC2511F3509}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -34,6 +38,14 @@ Global
 		{76DA48A0-08D2-4290-97C8-5A3CBF12D0A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{76DA48A0-08D2-4290-97C8-5A3CBF12D0A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{76DA48A0-08D2-4290-97C8-5A3CBF12D0A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE004850-4F43-4C29-B448-96B9456AFE25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE004850-4F43-4C29-B448-96B9456AFE25}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE004850-4F43-4C29-B448-96B9456AFE25}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE004850-4F43-4C29-B448-96B9456AFE25}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31599D38-C943-4A76-BD49-3BC2511F3509}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31599D38-C943-4A76-BD49-3BC2511F3509}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31599D38-C943-4A76-BD49-3BC2511F3509}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31599D38-C943-4A76-BD49-3BC2511F3509}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

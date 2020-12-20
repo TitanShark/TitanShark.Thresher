@@ -100,14 +100,14 @@ namespace TitanShark.Thresher.Core.Tests
 
         private class NewtonsoftJsonRecordSerializer : IRecordSerializer<string>
         {
-            public Task<string> Serialize(Record record, CancellationToken cancellationToken)
+            public Task<string> Serialize(Record record, CancellationToken cancellationToken = default)
             {
                 var json = JsonConvert.SerializeObject(record);
 
                 return Task.FromResult(json);
             }
 
-            public Task<Record> Deserialize(string json, CancellationToken cancellationToken)
+            public Task<Record> Deserialize(string json, CancellationToken cancellationToken = default)
             {
                 var record = JsonConvert.DeserializeObject<Record>(json);
 
