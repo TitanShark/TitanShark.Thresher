@@ -11,10 +11,10 @@ namespace TitanShark.Thresher.Core
 
         bool IsEnabled { get; set; }
 
-        Task OnPreparing(CallId callId, HttpRequestMessage request, CancellationToken cancellationToken);
+        Task OnPreparing(CallId callId, HttpRequestMessage request, CancellationToken cancellationToken = default);
         
-        Task OnDone(CallId callId, HttpRequestMessage request, HttpResponseMessage response, CancellationToken cancellationToken);
+        Task OnDone(CallId callId, HttpRequestMessage request, HttpResponseMessage response, CancellationToken cancellationToken = default);
 
-        Task OnError(CallId callId, HttpRequestMessage request, Exception exception, CancellationToken cancellationToken);
+        Task OnError(CallId callId, HttpRequestMessage request, Exception exception, CancellationToken cancellationToken = default);
     }
 }

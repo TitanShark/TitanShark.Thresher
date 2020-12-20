@@ -7,6 +7,6 @@ namespace TitanShark.Thresher.Core
     {
         int TotalRecords { get; }
 
-        Task<Record[]> Peek(int position, int batchSize, CancellationToken cancellationToken);
+        Task<Record[]> Peek(int position, int batchSize, CancellationToken cancellationToken = default);
     }
 }

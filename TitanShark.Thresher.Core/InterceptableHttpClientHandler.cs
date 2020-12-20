@@ -15,7 +15,7 @@ namespace TitanShark.Thresher.Core
             InterceptorsRunner = interceptorsRunner;
         }
 
-        protected override async Task OnPreparing(CallId callId, HttpRequestMessage request, CancellationToken cancellationToken)
+        protected override async Task OnPreparing(CallId callId, HttpRequestMessage request, CancellationToken cancellationToken = default)
         {
             if (InterceptorsRunner != null)
             {
@@ -23,7 +23,7 @@ namespace TitanShark.Thresher.Core
             }
         }
 
-        protected override async Task OnDone(CallId callId, HttpRequestMessage request, HttpResponseMessage response, CancellationToken cancellationToken)
+        protected override async Task OnDone(CallId callId, HttpRequestMessage request, HttpResponseMessage response, CancellationToken cancellationToken = default)
         {
             if (InterceptorsRunner != null)
             {
@@ -31,7 +31,7 @@ namespace TitanShark.Thresher.Core
             }
         }
 
-        protected override async Task OnError(CallId callId, HttpRequestMessage request, Exception exception, CancellationToken cancellationToken)
+        protected override async Task OnError(CallId callId, HttpRequestMessage request, Exception exception, CancellationToken cancellationToken = default)
         {
             if (InterceptorsRunner != null)
             {

@@ -7,8 +7,8 @@ namespace TitanShark.Thresher.Core
 {
     public interface IRecordsPersistence
     {
-        Task Save(Record record, CancellationToken cancellationToken);
+        Task Save(Record record, CancellationToken cancellationToken = default);
 
-        Task<ISnapshot> Snapshot(CancellationToken cancellationToken, DateTime? from = null, DateTime? to = null, HttpStatusCode[] statusCodes = null);
+        Task<ISnapshot> Snapshot(DateTime? from = null, DateTime? to = null, HttpStatusCode[] statusCodes = null, CancellationToken cancellationToken = default);
     }
 }

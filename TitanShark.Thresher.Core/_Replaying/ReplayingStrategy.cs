@@ -9,7 +9,7 @@ namespace TitanShark.Thresher.Core
     {
         public int CurrentPosition { get; protected set; }
 
-        public int BatchSize { get; protected set; }
+        public int BatchSize { get; set; }
 
         public Func<Type, byte[], HttpContent> ContentResolver { get; }
 
@@ -18,7 +18,7 @@ namespace TitanShark.Thresher.Core
             ContentResolver = contentResolver;
         }
 
-        public async Task Replay(HttpClient client, ISnapshot snapshot, CancellationToken cancellationToken)
+        public async Task Replay(HttpClient client, ISnapshot snapshot, CancellationToken cancellationToken = default)
         {
             while (true)
             {
@@ -43,6 +43,6 @@ namespace TitanShark.Thresher.Core
             }
         }
 
-        protected abstract Task OnReplay(HttpClient client, Record[] records, CancellationToken cancellationToken);
+        protected abstract Task OnReplay(HttpClient client, Record[] records, CancellationToken cancellationToken = default);
     }
 }

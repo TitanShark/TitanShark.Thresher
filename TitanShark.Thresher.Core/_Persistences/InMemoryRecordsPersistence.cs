@@ -25,12 +25,12 @@ namespace TitanShark.Thresher.Core
             Serializer = serializer;
         }
 
-        public virtual async Task Save(Record record, CancellationToken cancellationToken)
+        public virtual async Task Save(Record record, CancellationToken cancellationToken = default)
         {
             Records[record.CallId] = await Serializer.Serialize(record, cancellationToken);
         }
 
-        public virtual Task<ISnapshot> Snapshot(CancellationToken cancellationToken, DateTime? from = null, DateTime? to = null, HttpStatusCode[] statusCodes = null)
+        public virtual Task<ISnapshot> Snapshot(DateTime? from = null, DateTime? to = null, HttpStatusCode[] statusCodes = null, CancellationToken cancellationToken = default)
         {
             var matchedKvps = !from.HasValue && !to.HasValue 
                                     ? Records.ToArray() // see also: https://referencesource.microsoft.com/#mscorlib/system/Collections/Concurrent/ConcurrentDictionary.cs,edad672303ee9ee3
@@ -60,24 +60,5 @@ namespace TitanShark.Thresher.Core
 
             return Task.FromResult<ISnapshot>(snapshot);
         }
-
-        //public async Task<(Record currentRecord, CallId nextCallId)> Peek(CancellationToken cancellationToken, CallId callId = null, bool delete = false)
-        //{
-        //    Record currentRecord = null;
-        //    CallId currentCallId = callId;
-        //    CallId nextCallId = null;
-
-        //    if (currentCallId == null)
-        //    {
-        //        currentCallId = Records.Keys.FirstOrDefault();
-        //    }
-
-        //    if (currentCallId != null)
-        //    {
-        //        var json = Records[currentCallId];
-        //        currentRecord = await Serializer.Deserialize(json);
-        //        Records.Inters
-        //    }
-        //}
     }
 }

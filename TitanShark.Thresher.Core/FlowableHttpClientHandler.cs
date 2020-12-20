@@ -44,7 +44,7 @@ namespace TitanShark.Thresher.Core
             );
         }
 
-        protected virtual Task<HttpResponseMessage> OnSending(CallId callId, HttpRequestMessage request, CancellationToken cancellationToken)
+        protected virtual Task<HttpResponseMessage> OnSending(CallId callId, HttpRequestMessage request, CancellationToken cancellationToken = default)
         {
             var sendFunction = Transmitter?.SendFunction;
 
@@ -56,10 +56,10 @@ namespace TitanShark.Thresher.Core
             return Task.FromResult(default(HttpResponseMessage));
         }
 
-        protected abstract Task OnPreparing(CallId callId, HttpRequestMessage request, CancellationToken cancellationToken);
+        protected abstract Task OnPreparing(CallId callId, HttpRequestMessage request, CancellationToken cancellationToken = default);
 
-        protected abstract Task OnDone(CallId callId, HttpRequestMessage request, HttpResponseMessage response, CancellationToken cancellationToken);
+        protected abstract Task OnDone(CallId callId, HttpRequestMessage request, HttpResponseMessage response, CancellationToken cancellationToken = default);
 
-        protected abstract Task OnError(CallId callId, HttpRequestMessage request, Exception exception, CancellationToken cancellationToken);
+        protected abstract Task OnError(CallId callId, HttpRequestMessage request, Exception exception, CancellationToken cancellationToken = default);
     }
 }

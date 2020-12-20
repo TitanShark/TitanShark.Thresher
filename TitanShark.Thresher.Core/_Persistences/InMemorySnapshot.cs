@@ -24,7 +24,7 @@ namespace TitanShark.Thresher.Core
             SortedRecords = UnsortedRecords.OrderBy(record => record.CallId.UtcCreated).ToArray();
         }
 
-        public Task<Record[]> Peek(int position, int batchSize, CancellationToken cancellationToken)
+        public Task<Record[]> Peek(int position, int batchSize, CancellationToken cancellationToken = default)
         {
             var result = SortedRecords.Skip(position).Take(batchSize).ToArray();
             return Task.FromResult(result);

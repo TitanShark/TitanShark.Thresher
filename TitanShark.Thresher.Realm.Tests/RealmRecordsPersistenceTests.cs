@@ -1,17 +1,20 @@
-﻿using FluentAssertions;
+using FluentAssertions;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Reflection;
 using System.Threading.Tasks;
+using TitanShark.Thresher.Core;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace TitanShark.Thresher.Core.Tests
+namespace TitanShark.Thresher.Realm.Tests
 {
-    public class ReplayerTests
+    public class RealmRecordsPersistenceTests
     {
         private const string AcceptJson = "application/json";
         private const string BasicAuthScheme = "Basic";
@@ -19,13 +22,13 @@ namespace TitanShark.Thresher.Core.Tests
 
         private readonly ITestOutputHelper _output;
 
-        public ReplayerTests(ITestOutputHelper output)
+        public RealmRecordsPersistenceTests(ITestOutputHelper output)
         {
             _output = output;
         }
 
         [Fact]
-        public async Task Record_And_Sequential_Replay_With_Filter_On_StatusCodes()
+        public async Task Record_Replay_With_Default_Settings()
         {
             // prepares
             var stats = new Dictionary<HttpStatusCode, int>
@@ -45,15 +48,19 @@ namespace TitanShark.Thresher.Core.Tests
 
                         var response = Mock.Build(request);
 
-                        stats[response.StatusCode] += 1; 
+                        stats[response.StatusCode] += 1;
 
                         return Task.FromResult(response);
                     }
                 );
-            var persistence = new InMemoryRecordsPersistence();
+
+            // acts
+            // ... recording
+            RealmRecordsPersistence persistence = CreateRealmPersistence();
+
             var recorder = new Recorder(persistence);
             var handler = new InterceptableHttpClientHandler(
-                transmitter: transmitter, 
+                transmitter: transmitter,
                 interceptorsRunner: new SequentialInterceptorsRunner(recorder));
 
             var client = new HttpClient(handler);
@@ -68,6 +75,7 @@ namespace TitanShark.Thresher.Core.Tests
             await Task.Delay(TimeSpan.FromMilliseconds(100));
             await client.GetAsync("https://testing.only/Failed").ConfigureAwait(false);
 
+            // asserts
             stats[HttpStatusCode.OK].Should().Be(1);
             stats[HttpStatusCode.NotAcceptable].Should().Be(0);
             stats[HttpStatusCode.Unauthorized].Should().Be(0);
@@ -86,7 +94,7 @@ namespace TitanShark.Thresher.Core.Tests
             // ... snapshots
             // ... gets only logic-failed requests
             var snapshot = await persistence.Snapshot(
-                started, ended, 
+                started, ended,
                 new[] { HttpStatusCode.BadRequest, HttpStatusCode.NotFound });
 
             // ... re-creates a fresh instance of HttpClient, without recorder.
@@ -98,13 +106,101 @@ namespace TitanShark.Thresher.Core.Tests
             await replayer.Start();
             replayer.Stop();
 
+            // cleans up
+            client.Dispose();
+
             // asserts
             stats[HttpStatusCode.OK].Should().Be(0);
             stats[HttpStatusCode.BadRequest].Should().Be(1);
             stats[HttpStatusCode.NotFound].Should().Be(1);
+        }
+
+        [Fact]
+        public async Task Record_Replay_Long_Running_In_Parallel()
+        {
+            // prepares
+            const int total = 1000;
+            var successCounter = 0;
+
+            var transmitter = new Transmitter
+                (
+                    (callId, request, cancellationToken) =>
+                    {
+                        _output.WriteLine($"Request to '{request.RequestUri}' was sent out.");
+
+                        var response = Mock.Build(request);
+
+                        if (response.IsSuccessStatusCode)
+                        {
+                            successCounter++;
+                        }
+
+                        return Task.FromResult(response);
+                    }
+                );
+
+            // acts
+            // ... recording
+            RealmRecordsPersistence persistence = CreateRealmPersistence();
+
+            var recorder = new Recorder(persistence);
+            var handler = new InterceptableHttpClientHandler(
+                transmitter: transmitter,
+                interceptorsRunner: new SequentialInterceptorsRunner(recorder));
+
+            var client = new HttpClient(handler);
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(AcceptJson));
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(BasicAuthScheme, BasicAuthValue);
+
+            var started = DateTime.UtcNow;
+            await Task.WhenAll(Enumerable
+                                .Range(1, total)
+                                .Select(num => Task.Run(async () =>
+                                {
+                                    await client.GetAsync("https://testing.only/Successful").ConfigureAwait(false);
+                                })));
+            var ended = DateTime.UtcNow;
+
+            // asserts
+            successCounter.Should().Be(total);
+
+            // cleans up
+            successCounter = 0;
+            client.Dispose();
+
+            // acts
+            // ... snapshots
+            var snapshot = await persistence.Snapshot(started, ended);
+            snapshot.TotalRecords.Should().Be(total);
+
+            // ... re-creates a fresh instance of HttpClient, without recorder.
+            handler = new InterceptableHttpClientHandler(transmitter: transmitter);
+            client = new HttpClient(handler);
+
+            // ... replays
+            var replayer = new Replayer(
+                new SequentialReplayingStrategy
+                {
+                    BatchSize = total / 100 // changes default Batch Size 
+                },
+                client,
+                snapshot);
+
+            await replayer.Start();
+            replayer.Stop();
+
+            // asserts
+            successCounter.Should().Be(total);
 
             // cleans up
             client.Dispose();
+        }
+
+        private static RealmRecordsPersistence CreateRealmPersistence()
+        {
+            var location = Assembly.GetExecutingAssembly().Location;
+            var persistence = new RealmRecordsPersistence(Path.Combine(Path.GetDirectoryName(location), "records.realm"));
+            return persistence;
         }
 
         private class Mock

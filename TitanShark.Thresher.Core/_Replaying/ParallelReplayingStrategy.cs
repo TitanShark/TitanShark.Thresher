@@ -15,7 +15,7 @@ namespace TitanShark.Thresher.Core
             BatchSize = 1;
         }
 
-        protected override async Task OnReplay(HttpClient client, Record[] records, CancellationToken cancellationToken)
+        protected override async Task OnReplay(HttpClient client, Record[] records, CancellationToken cancellationToken = default)
         {
             if (records == null || records.Length == 0)
             {

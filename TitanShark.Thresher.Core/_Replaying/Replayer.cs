@@ -21,20 +21,16 @@ namespace TitanShark.Thresher.Core
             Snapshot = snapshot;
         }
 
-        public virtual void Start()
+        public Task Start()
         {
             if (Snapshot.TotalRecords == default)
             {
-                return;
+                return Task.CompletedTask;
             }
 
             _cts = new CancellationTokenSource();
 
-            Task.Factory.StartNew(
-                () => ReplayingStrategy.Replay(Client, Snapshot, _cts.Token), 
-                _cts.Token, 
-                TaskCreationOptions.LongRunning, 
-                TaskScheduler.Default);
+            return ReplayingStrategy.Replay(Client, Snapshot, _cts.Token);
         }
 
         public virtual void Stop()
