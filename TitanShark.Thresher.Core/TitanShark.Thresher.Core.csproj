@@ -8,8 +8,9 @@
     <RepositoryUrl>https://github.com/TitanShark/TitanShark.Thresher</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <Copyright>© TitanShark GmbH</Copyright>
-    <Description>.Net Library for hooking HttpClient.
-Use cases: mocking for Unit-tests, recording and replaying Request/Response.</Description>
+    <Description>
+      .Net Library for intercepting HttpClient.
+      Use cases: mocking for Unit-Tests, Recording and Replaying of Requests/Responses.</Description>
     <PackageTags>HttpClient, hook, mock, record, replay</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>

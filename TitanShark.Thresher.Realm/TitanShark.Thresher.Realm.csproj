@@ -9,8 +9,8 @@
     <RepositoryType>Git</RepositoryType>
     <Copyright>© TitanShark GmbH</Copyright>
     <Description>
-      .Net Library for hooking HttpClient.
-      Use cases: mocking for Unit-tests, recording and replaying Request/Response.
+      An Extension of TitanShark.Thresher.Core (https://www.nuget.org/packages/TitanShark.Thresher.Core/) - a simple way for intercepting HttpClient.
+      Provides Embedded NoSQL Persistence powed by Mongo Realm.
     </Description>
     <PackageTags>HttpClient, hook, mock, record, replay</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
