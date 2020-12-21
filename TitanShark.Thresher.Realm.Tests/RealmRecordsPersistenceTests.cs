@@ -1,3 +1,5 @@
+#if DEBUG
+
 using FluentAssertions;
 using System;
 using System.Collections.Generic;
@@ -184,7 +186,7 @@ namespace TitanShark.Thresher.Realm.Tests
             var replayer = new Replayer(
                 new SequentialReplayingStrategy
                 {
-                    BatchSize = 11 // for checking the Algorith of Batching!
+                    BatchSize = 11 // for checking the Algorithm of Batching!
                 },
                 client,
                 snapshot);
@@ -255,3 +257,5 @@ namespace TitanShark.Thresher.Realm.Tests
         }
     }
 }
+
+#endif

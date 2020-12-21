@@ -63,9 +63,7 @@ namespace TitanShark.Thresher.Realm
                 }
                 catch (Exception exception)
                 {
-#if DEBUG
                     System.Diagnostics.Debug.Fail(exception.ToString());
-#endif
                     throw;
                 }
             }
