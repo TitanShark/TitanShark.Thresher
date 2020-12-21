@@ -40,8 +40,10 @@ jobs:
           DOTNET_CLI_TELEMETRY_OPTOUT: true
           NUGET_KEY: ${{secrets.NUGET_API_KEY}}
         run: |
-          dotnet pack
-          dotnet nuget push ./**/bin/**/*.nupkg --api-key $NUGET_KEY --source https://api.nuget.org/v3/index.json
+          dotnet pack --configuration Release
+
+          # see also the following Bug: https://github.com/dotnet/docs/issues/7146
+          dotnet nuget push **/*.nupkg --api-key $NUGET_KEY --source https://api.nuget.org/v3/index.json
 
       # See also: https://itnext.io/creating-a-github-action-to-tag-commits-2722f1560dec
       - name: Add Git-Tag corresponding Current SEMVER-Version
