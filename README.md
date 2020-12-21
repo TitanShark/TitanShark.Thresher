@@ -2,6 +2,8 @@
 Provides extendable **Interception Mechanism** for `HttpClient`.
 
 ## TitanShark.Thresher.Core
+Introduces **Fundamentals** for **intercepting** `HttpClient` via customization of `HttpClientHandler`.
+
 **Nuget Package:** https://www.nuget.org/packages/TitanShark.Thresher.Core/
 
 **Minimum DotNet's Version required:** 
@@ -70,4 +72,26 @@ You are not limited to `InMemoryRecordsPersistence`; just write a new `Persisten
 
 By default, `SystemJsonRecordSerializer` (powered by `System.Text.Json` - a built-in, lightweight JSON-Lib of .Net Framework) is employed for serializing/deserializing `Record`. You can however plug your own Serialization Mechanism (implementing `IRecordSerializer`) into your `Persistence`'s Instance. An example for using `Newtonsoft.Json` is given [here](TitanShark.Thresher.Core.Tests/InterceptorTests.cs).
 
-### All other cool features (e.g. Embedded MongoDB as Persistence, OpenAPI Compatibility, etc.) are coming soon! ;-)
+## TitanShark.Thresher.Realm
+Introduces **Mongo Realm** as **Embedded NoSQL Persistence** for Recording/Replaying of Requests/Responses.
+
+**Nuget Package:** https://www.nuget.org/packages/TitanShark.Thresher.Realm/
+
+**Minimum DotNet's Version required:** 
+- .Net Framework 4.6.2
+- .Net Standard 2.0 
+- .Net 5.0 (yayy! IoI)
+
+Ìt cannot be simpler! Just use `RealmRecordsPersistence`!
+
+``` CSharp
+var location = Assembly.GetExecutingAssembly().Location;
+var persistence = new RealmRecordsPersistence(Path.Combine(Path.GetDirectoryName(location), "records.realm"));
+var recorder = new Recorder(persistence);
+```
+
+[More details](TitanShark.Thresher.Realm.Tests/RealmRecordsPersistenceTests.cs)
+
+More information about Mongo Realm, please refer to https://docs.mongodb.com/realm/dotnet.
+
+## Next cool features (OpenAPI Compatibility, etc.) are coming soon! ;-)
