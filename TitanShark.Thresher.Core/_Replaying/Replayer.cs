@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -23,6 +24,11 @@ namespace TitanShark.Thresher.Core
 
         public Task Start()
         {
+            if (_cts != null)
+            {
+                throw new InvalidOperationException("Please call Stop() first!");
+            }
+
             if (Snapshot.TotalRecords == default)
             {
                 return Task.CompletedTask;
