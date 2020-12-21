@@ -21,6 +21,8 @@ namespace TitanShark.Thresher.Realm.Tests
         private const string BasicAuthValue = "cm9vdDpyb290";
 
         private readonly ITestOutputHelper _output;
+        private volatile int _successCounter;
+        private readonly object _lock = new object();
 
         public RealmRecordsPersistenceTests(ITestOutputHelper output)
         {
@@ -114,25 +116,26 @@ namespace TitanShark.Thresher.Realm.Tests
             stats[HttpStatusCode.BadRequest].Should().Be(1);
             stats[HttpStatusCode.NotFound].Should().Be(1);
         }
-
+        
         [Fact]
         public async Task Record_Replay_Long_Running_In_Parallel()
         {
             // prepares
             const int total = 1000;
-            var successCounter = 0;
+            _successCounter = 0;
 
             var transmitter = new Transmitter
                 (
                     (callId, request, cancellationToken) =>
                     {
-                        _output.WriteLine($"Request to '{request.RequestUri}' was sent out.");
-
                         var response = Mock.Build(request);
 
                         if (response.IsSuccessStatusCode)
                         {
-                            successCounter++;
+                            lock (_lock)
+                            { 
+                                _successCounter++; 
+                            }
                         }
 
                         return Task.FromResult(response);
@@ -162,10 +165,10 @@ namespace TitanShark.Thresher.Realm.Tests
             var ended = DateTime.UtcNow;
 
             // asserts
-            successCounter.Should().Be(total);
+            _successCounter.Should().Be(total);
 
             // cleans up
-            successCounter = 0;
+            _successCounter = 0;
             client.Dispose();
 
             // acts
@@ -181,7 +184,7 @@ namespace TitanShark.Thresher.Realm.Tests
             var replayer = new Replayer(
                 new SequentialReplayingStrategy
                 {
-                    BatchSize = total / 100 // changes default Batch Size 
+                    BatchSize = 11 // for checking the Algorith of Batching!
                 },
                 client,
                 snapshot);
@@ -190,7 +193,7 @@ namespace TitanShark.Thresher.Realm.Tests
             replayer.Stop();
 
             // asserts
-            successCounter.Should().Be(total);
+            _successCounter.Should().Be(total);
 
             // cleans up
             client.Dispose();
